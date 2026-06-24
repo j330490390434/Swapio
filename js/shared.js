@@ -4,9 +4,9 @@ const SWAPIO = {
   siteName: 'Swapio',
   siteUrl: 'https://swapio.cc',
   logoPath: '/assets/logo.png',
-  ogImagePath: '/assets/logo.png',
-  faviconPath: '/assets/logo.png',
-  appleTouchIconPath: '/assets/logo.png',
+  ogImagePath: '/assets/logo-512.png',
+  faviconPath: '/assets/logo-32.png',
+  appleTouchIconPath: '/assets/logo-180.png',
   supportEmail: 'support@swapio.cc',
 
   seoKeywords: [
