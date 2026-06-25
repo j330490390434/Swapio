@@ -174,10 +174,11 @@ function initSeo() {
   }
   canonical.href = url;
 
-  if (!document.getElementById('swapio-org-schema')) {
+  if (!document.querySelector('script[type="application/ld+json"]')) {
     const script = document.createElement('script');
     script.id = 'swapio-org-schema';
     script.type = 'application/ld+json';
+    const reviews = SWAPIO.sellerReviews || [];
     script.textContent = JSON.stringify({
       '@context': 'https://schema.org',
       '@graph': [
@@ -187,22 +188,35 @@ function initSeo() {
           url: origin,
           description: 'Turn unused gift cards into cash. Get 95% of your card value via PayPal, Cash App, Zelle, Venmo, Bitcoin, or bank transfer.',
           inLanguage: 'en-US',
-        },
-        {
-          '@type': 'Organization',
-          name: SWAPIO.siteName,
-          url: origin,
-          email: SWAPIO.supportEmail,
-          logo: `${origin}${SWAPIO.logoPath}`,
-          description: 'Turn unused gift cards into cash. Get 95% of your card value via PayPal, Cash App, Zelle, Venmo, Bitcoin, or bank transfer.',
+          publisher: {
+            '@type': 'Organization',
+            name: SWAPIO.siteName,
+            url: origin,
+            email: SWAPIO.supportEmail,
+            logo: `${origin}${SWAPIO.ogImagePath}`,
+          },
         },
         {
           '@type': 'Service',
+          '@id': `${origin}/#service`,
           name: 'Swapio Gift Card Exchange',
-          provider: { '@type': 'Organization', name: SWAPIO.siteName },
+          provider: { '@type': 'Organization', name: SWAPIO.siteName, url: origin },
           url: origin,
           description: 'Sell unused gift cards for cash with 95% payout via PayPal, Cash App, Zelle, Venmo, Bitcoin, or bank transfer.',
           areaServed: 'US',
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: '4.9',
+            reviewCount: reviews.length,
+            bestRating: '5',
+            worstRating: '1',
+          },
+          review: reviews.slice(0, 3).map((review) => ({
+            '@type': 'Review',
+            author: { '@type': 'Person', name: review.name },
+            reviewBody: review.text,
+            reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5', worstRating: '1' },
+          })),
         },
       ],
     });

@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import re
+import subprocess
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -241,6 +243,9 @@ def main() -> None:
         if "site-header" not in read_text(path):
             continue
         patch_file(path, reviews, articles, brands)
+
+    schema_script = ROOT / "scripts" / "inject-seo-schema.py"
+    subprocess.run([sys.executable, str(schema_script)], check=True)
 
 
 if __name__ == "__main__":
